@@ -20,19 +20,30 @@ listStorm <- c("astronomical low tide", "avalanche", "blizzard",
                "volcanic ash", "waterspout", "wildfire", "winter storm", 
                "winter weather")
 
-shinyUI(pageWithSidebar(
+shinyUI(fluidPage(
   # Application title
-  headerPanel("Weather Event Loss Prediction"),
-  sidebarPanel(
-    selectInput("myState", "choose state", listState),
-    selectInput("myStorm", "choose weather event", listStorm)
-     ),
+  titlePanel("Mare's Tail:  Weather Event Loss Prediction",
+              tags$head(
+                tags$img(src = "mares_tail_logo.jpg", height = 100, width = 100))),
+  sidebarLayout(
+    sidebarPanel(
+    h4("Instructions"),
+    p("Select US state and weather event from the lists below."),
+    selectInput("myState", "state", listState),
+    selectInput("myStorm", "weather event", listStorm),
+    p("The expected number of events per year, and the expected injuries, 
+      fatalities, property and crop damage per event are shown in the right hand 
+      panel.")
+    ),
   mainPanel(
-    h4("number of events", verbatimTextOutput("nEvent")),
-    h4("mean property damage", verbatimTextOutput("PropDmg")),
-    h4("mean crop damage", verbatimTextOutput("CropDmg")),
-    h4("mean injuries", verbatimTextOutput("Injury")),
-    h4("mean fatalities", verbatimTextOutput("Fatality"))
-    )
+    h4("events per year", verbatimTextOutput("nEvent")),
+    h4("injuries per 1000 events", verbatimTextOutput("Injury")),
+    h4("fatalities per 1000 events", verbatimTextOutput("Fatality")),
+    h4("property damage per event, $ million", verbatimTextOutput("PropDmg")),
+    h4("crop damage per event, $ million", verbatimTextOutput("CropDmg")),
+    p("Raw data for storm events recorded between 1996-2011 are from the National Oceanic and Atmospheric Administration."),
+    a("https://www.ncdc.noaa.gov/stormevents/"),
+    p("Details of data processing are available at"),
+    a("http://rpubs.com/jonathanowen/weather"))
   )
-)
+))
